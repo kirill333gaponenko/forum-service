@@ -1,14 +1,16 @@
 import express from 'express';
 import mongoose from "mongoose";
 import config from "./configuration/config.js";
-
-
+import postRoutes from "./routes/post.routes.js";
 
 const app = express();
+
 app.use(express.json());
 
-//TODO
-const connect = async() => {
+app.use('/forum', postRoutes)
+// TODO
+
+const connectDB = async () => {
     try {
         await mongoose.connect(config.mongodb.uri, config.mongodb.db);
         console.log("Connected to MongoDB");
@@ -18,9 +20,8 @@ const connect = async() => {
 }
 
 async function startServer() {
-
-        app.listen(config.port, () => console.log(`Server running on port ${config.port}. Press Ctrl+C to quit.`));
-
+    await connectDB();
+    app.listen(config.port, () => console.log(`Server running on port ${config.port}. Press Ctrl+C to quit.`));
 }
 
 startServer();

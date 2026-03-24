@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
 
-import studentRoutes from '../routes/studentRoutes.js';
+import studentRoutes from '../routes/post.routes.js';
 import Student from '../model/student.js';
 
 function buildApp() {
