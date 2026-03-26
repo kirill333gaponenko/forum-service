@@ -3,10 +3,13 @@ import mongoose from "mongoose";
 import config from "./configuration/config.js";
 import postRoutes from "./routes/post.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
+import createRandomId24 from "./utils/idCreator.js";
+
 
 const app = express();
 
 app.use(express.json());
+
 
 app.use('/forum', postRoutes)
 
@@ -16,6 +19,7 @@ const connectDB = async () => {
     try {
         await mongoose.connect(config.mongodb.uri, config.mongodb.db);
         console.log("Connected to MongoDB");
+        console.log(createRandomId24())// idCreator test
     } catch (e) {
         console.log('Failed connecting to MongoDB: ', e);
     }
