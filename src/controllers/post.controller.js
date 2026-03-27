@@ -1,15 +1,8 @@
 import postService from "../service/post.service.js";
-import {createPostSchema} from "../validator/studentValidator.js";
 
 class PostController {
     async createPost(req, res, next) {
-        const {error} = createPostSchema.validate(req.body);
-        if (error) {
-            return res.status(400).send(error.details[0].message);
-        }
-
         try {
-
             const post = await postService.createPost(req.params.author, req.body);
             return res.status(201).json(post);
         } catch (e) {
@@ -21,15 +14,19 @@ class PostController {
     async getPostById(req, res, next) {
         try {
             const post = await postService.getPostById(req.params.id);
-            return res.status(200).json(post);
+            return res.json(post);
         } catch (e) {
             return next(e);
         }
     }
 
     async deletePost(req, res, next) {
-        // TODO handle service post deletion
-        throw new Error('Not implemented');
+        try {
+            const post = await postService.deletePost(req.params.id);
+            return res.json(post);
+        } catch (e) {
+            return next(e);
+        }
     }
 
     async addLike(req, res, next) {

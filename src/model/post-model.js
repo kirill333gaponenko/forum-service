@@ -1,57 +1,50 @@
-import mongoose from "mongoose";
-import createRandomId24 from "../utils/idCreator.js";
+import  {Schema, model, Types} from 'mongoose';
+import commentSchema from "./comment.model.js";
 
-
-const postSchema = new mongoose.Schema({
-    _id: {type: String, default:createRandomId24()},
-    title: {type: String, required: true},
-    content: {type: String, required: true},
-    author: {type: String, required: true},
-    dateCreated: {type:String, default: (new Date()).toLocaleString()},
+const postSchema = new Schema({
+    _id: {
+        type: String,
+        default: () => new Types.ObjectId().toHexString(),
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    author: {
+        type: String,
+        required: true
+    },
+    dateCreated: {
+        type: Date,
+        default: Date.now
+    },
     tags: {
-        type: Array,
-        of: String,
-        default:[]
-
+        type: [String],
+        default: []
     },
     likes: {
         type: Number,
         default: 0
     },
     comments: {
-        type: Array,
-        of: String,
-        default: []
-
+        type: [commentSchema],
+        default: [],
     }
-
-
-},
-{
+}, {
     versionKey: false,
-
+    toJSON: {
+        transform: (doc, ret) => {
+            ret.id = doc._id;
+            delete ret._id;
+            ret.dateCreated = doc.dateCreated.toISOString().slice(0, 19);
+        }
+    }
 })
 
-const Post =  mongoose.model('Post',postSchema,'forum')
+export default model('Post', postSchema, "posts");
 
-export default Post;
-
-
-
-// Post
-// {
-//     "id": "61b86639905cb348d52a138d",
-//     "title": "JavaEE",
-//     "content": "Java is the best for backend",
-//     "author": {{user}},
-//     "dateCreated": "2021-12-14T11:39:05",
-//     "tags": [
-//     "Java",
-//     "backend",
-//     "JEE",
-//     "Spring"
-// ],
-//     "likes": 0,
-//     "comments": []
-// }
 
