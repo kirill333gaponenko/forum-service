@@ -45,6 +45,6 @@ const postSchema = new Schema({
     }
 })
 
-export default model('Post', postSchema, "posts");
+export default model('Post', postSchema, "forum");
 
 

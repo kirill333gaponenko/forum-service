@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cross-env PORT=8000 node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "start1": "node src/utils/idCreator.js"
   },
   "keywords": [],
   "author": "Kirill",

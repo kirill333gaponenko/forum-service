@@ -30,33 +30,62 @@ class PostController {
     }
 
     async addLike(req, res, next) {
-        // TODO handle service like addition
-        throw new Error('Not implemented');
+
+        const id = req.params.id||"defaultId";
+        try{
+
+             const post = await postService.addLike("213");
+            return res.json();
+        }catch(e){
+            return next(e);
+        }
     }
 
     async getPostsByAuthor(req, res, next) {
-        // TODO handle service posts retrieval by author
-        throw new Error('Not implemented');
+        try{
+            const posts = await postService.getPostsByAuthor(req.params.author);
+            return res.json(posts);
+        }catch(e){
+            return next(e);
+        }
     }
 
     async addComment(req, res, next) {
-        // TODO handle service comment addition
-        throw new Error('Not implemented');
+
+        try{
+            const post = await postService.addComment(req.params.id,req.params.commenter,req.body);
+            return res.json(post);
+        }catch(e){
+            return next(e);
+        }
     }
 
     async getPostsByTags(req, res, next) {
-        // TODO handle service posts retrieval by tags
-        throw new Error('Not implemented');
+        try{
+
+            const posts = await postService.getPostsByTags(req.query.values);
+            return res.json(posts);
+        }catch(e){
+            return next(e);
+        }
     }
 
     async getPostsByPeriod(req, res, next) {
-        // TODO handle service posts retrieval by period
-        throw new Error('Not implemented');
+        try{
+            const posts = await postService.getPostsByPeriod(req.query.dateFrom,req.query.dateTo);
+            return res.json(posts);
+        }catch(e){
+            return next(e);
+        }
     }
 
     async updatePost(req, res, next) {
-        // TODO handle service post update
-        throw new Error('Not implemented');
+        try{
+            const post = await postService.updatePost(req.params.id, req.body);
+            return res.json(post);
+        }catch(e){
+            return next(e);
+        }
     }
 }
 

@@ -8,34 +8,48 @@ class PostRepository {
 
     }
     async findPostById(id){
-        return Post.findById(id);
+        return Post.findById(id).exec();
     }
     async deletePost(id){
-        return Post.findByIdAndDelete(id)
+        return Post.findByIdAndDelete(id).exec()
     }
     async addLike(id){
-        //TODO
-        throw new Error('Not implemented')
+
+
+        return Post.findByIdAndUpdate(id,{$inc:{likes:1}},{new:true}).exec()
     }
     async getPostsByAuthor(author){
-        //TODO
-        throw new Error('Not implemented')
+
+        return Post.find({author: new RegExp(`^${author}$`,'i')}).exec()
+
     }
-    async addComment(id,author){
-        //TODO
-        throw new Error('Not implemented')
+    async addComment(id,commenter,message){
+
+        return Post.findByIdAndUpdate(id, {
+            $push: {"comments": {
+                user: commenter,
+                message: message,
+                dateCreated: new Date(),
+                likes:0
+                }}
+
+        },{new:true})
     }
     async getPostsByTags(tags){
-        //TODO
-        throw new Error('Not implemented')
+
+        const regexConditions = tags.map(tags => ({
+            tags: new RegExp(`^${tags}$`, 'i')
+        }));
+        return Post.find({$or:regexConditions}).exec()
     }
     async getPostsByPeriod(from,to){
-        //TODO
-        throw new Error('Not implemented')
+
+        return Post.find({dateCreated:{$lte:to, $gte:from}}).exec()
+
     }
-    async updatePost(id){
-        //TODO
-        throw new Error('Not implemented')
+    async updatePost(id,date){
+
+        return Post.findByIdAndUpdate(id,date,{new:true}).exec()
     }
 
 }
