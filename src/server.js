@@ -4,13 +4,19 @@ import config from "./configuration/config.js";
 import postRoutes from "./routes/post.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
 import createRandomId24 from "./utils/idCreator.js";
+import {setDbConnectionError} from "./state/db.state.js";
+import {dbGuard} from "./middlewares/db-guard.middleware.js";
 
 
 const app = express();
 
 app.use(express.json());
-
-
+app.use('/health', (req, res) =>{
+    res.json({status: 'server online',
+        database:mongoose.connection.readyState ===1?"connected":"disconnected"
+    })
+})
+app.use(dbGuard)
 app.use('/forum', postRoutes)
 
 app.use(errorHandler)
@@ -19,8 +25,8 @@ const connectDB = async () => {
     try {
         await mongoose.connect(config.mongodb.uri, config.mongodb.db);
         console.log("Connected to MongoDB");
-        console.log(createRandomId24())// idCreator test
     } catch (e) {
+        setDbConnectionError(e)
         console.log('Failed connecting to MongoDB: ', e);
     }
 }
