@@ -19,7 +19,6 @@ const connectDB = async () => {
     try {
         await mongoose.connect(config.mongodb.uri, config.mongodb.db);
         console.log("Connected to MongoDB");
-        console.log(createRandomId24())// idCreator test
     } catch (e) {
         console.log('Failed connecting to MongoDB: ', e);
     }
