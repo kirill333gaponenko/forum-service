@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 import config from "./configuration/config.js";
 import postRoutes from "./routes/post.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
-import createRandomId24 from "./utils/idCreator.js";
+import userRoutes from "./routes/user.routes.js";
 
 
 const app = express();
 
 app.use(express.json());
 
-
+app.use('/account',userRoutes)
 app.use('/forum', postRoutes)
 
 app.use(errorHandler)

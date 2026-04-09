@@ -1,6 +1,7 @@
 const errorHandler = (err, req, res, next) => {
     console.log(err.stack)
-    const contains = err.message.toLowerCase().includes('not found');
+    const contains = err.message.toLowerCase().includes('not found') || err.message.toLowerCase().includes('already exists');
+
 
     if (err.message && contains) {
         return res.status(404).json({

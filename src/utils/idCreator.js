@@ -15,6 +15,10 @@ export function createRandomId24() {
 }
 
 
+const arr =[]
+if(arr){
+    console.log("hi")
+}
 
 export default createRandomId24;
 
