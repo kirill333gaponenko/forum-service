@@ -5,7 +5,7 @@ const userSchema = new Schema({
     password:{type: Number, required: true},
     firstName:{type: String, required: true},
     lastName:{type: String, required: true},
-    role:{
+    roles:{
         type: [String],
         enum: ['user', 'admin'],
         default: ['user']
@@ -18,6 +18,7 @@ const userSchema = new Schema({
         transform: (doc, ret) => {
             delete ret.password;
             delete ret._id;
+            ret.roles = ret.roles.map(role => role.toUpperCase());
         }
     }
     })

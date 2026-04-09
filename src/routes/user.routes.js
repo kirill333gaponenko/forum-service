@@ -9,6 +9,7 @@ import {
     changePassword,
     getUser
 } from "../controllers/user.controller.js";
+import validate from "../middlewares/validation.middleware.js";
 
 
 
@@ -17,10 +18,10 @@ import {
 
 const router = Router();
 
-router.post('/register', register)
+router.post('/register', validate('register'), register)
 router.post('/login', login)
 router.delete('/user/:id', deleteUser)
-router.patch('/user/:id',updateUser)
+router.patch('/user/:id',validate('updateUser'),updateUser)
 router.patch('/user/:id/role/:role',addRole)
 router.delete('/user/:id/role/:role',deleteRole)
 router.patch('/password',changePassword)
