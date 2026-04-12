@@ -2,8 +2,10 @@ import express from 'express';
 import mongoose from "mongoose";
 import config from "./configuration/config.js";
 import postRoutes from "./routes/post.routes.js";
+import userAccountRoutes from "./routes/userAccount.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
 import createRandomId24 from "./utils/idCreator.js";
+import userAccountService from "./service/userAccount.service.js";
 
 
 const app = express();
@@ -12,6 +14,7 @@ app.use(express.json());
 
 
 app.use('/forum', postRoutes)
+app.use('/account', userAccountRoutes)
 
 app.use(errorHandler)
 
