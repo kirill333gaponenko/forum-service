@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import {ADMIN, MODERATOR, USER} from "../configuration/constants.js";
 
 const schemas = {
     createPost: Joi.object({
@@ -14,27 +15,31 @@ const schemas = {
         content: Joi.string(),
         tags: Joi.array().items(Joi.string()),
     }),
+
     dateFormat: Joi.object({
         dateFrom: Joi.date().iso().required(),
         dateTo: Joi.date().iso().required().greater(Joi.ref('dateFrom')),
     }),
+
     register: Joi.object({
         login: Joi.string().required(),
         password: Joi.string().required(),
         firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
+        lastName: Joi.string().required()
     }),
+
     updateUser: Joi.object({
         firstName: Joi.string(),
         lastName: Joi.string(),
     }),
-    changeRole: Joi.object({
-        role: Joi.string().valid('ADMIN', 'USER','MODERATOR').required(),
-    })
 
+    changeRoles: Joi.object({
+        role: Joi.string().valid(USER, MODERATOR, ADMIN).insensitive().required(),
+        login: Joi.string().required()
+    })
 }
 
-const validate = (schemaName,target = 'body') => (req, res, next) => {
+const validate = (schemaName, target = 'body') => (req, res, next) => {
     const schema = schemas[schemaName];
     if (!schema) {
         return next(new Error('Invalid schema name'));
@@ -53,4 +58,3 @@ const validate = (schemaName,target = 'body') => (req, res, next) => {
 }
 
 export default validate;
-

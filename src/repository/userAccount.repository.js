@@ -27,14 +27,12 @@ class UserAccountRepository  {
         return UserAccount.findByIdAndUpdate(login,{$pull:{roles:role}},{new:true}).exec()
     }
 
-    async changePassword(login,newPassword){
-        // return UserAccount.findByIdAndUpdate(login,{password:newPassword},{new:true}).exec()
-        const user =await UserAccount.findById(login)
-        if(!user){
-            return null;
+    async changePassword(login, newPassword) {
+        const user = await UserAccount.findById(login);
+        if (user) {
+            user.password = newPassword;
+            return user.save();
         }
-        user.password = newPassword
-        return  user.save()
     }
 
 }
