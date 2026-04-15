@@ -6,9 +6,11 @@ import userAccountRoutes from "./routes/userAccount.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
 import createRandomId24 from "./utils/idCreator.js";
 import userAccountService from "./service/userAccount.service.js";
+import authentication from "./middlewares/authentication.middleware.js";
 
 
 const app = express();
+app.use(authentication)
 
 app.use(express.json());
 
