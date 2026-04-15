@@ -40,5 +40,9 @@ userAccountSchema.pre('save', async function() {
     }
 })
 
+userAccountSchema.methods.comparePassword = async function(plaintextPassword) {
+    return  bcrypt.compare(plaintextPassword, this.password);
+}
+
 
 export default model('UserAccount', userAccountSchema, "users");
