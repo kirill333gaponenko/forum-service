@@ -1,27 +1,43 @@
+import postService from "../service/post.service.js";
+
 class Authorization{
     hasRole(role){
         return (req,res,next) => (
             req.principal.roles.includes(role.toUpperCase().trim()) ? next() : res.status(403).json({message: 'Access denied'})
         )
     }
-    sameUser(id){
+    isOwner(paramName = 'author'){
         return (req,res,next) => (
-
-            req.principal.userName === req.params[id] ? next() : res.status(403).json({message: 'Access denied'})
+            req.params[paramName] === req.principal.userName ? next() : res.status(403).json({message: 'Access denied'})
         )
     }
-    checkRoleOrSameUser(role) {
-        return (req, res, next) => {
+    isOwnerOrHasRole(paramName, role){
+        return (req,res,next) =>{
+            const isOwner = req.params[paramName] === req.principal.userName;
             const hasRole = req.principal.roles.includes(role.toUpperCase().trim());
-            const sameUser = req.principal.userName === req.params.login;
-
-            if (hasRole || sameUser) {
-                return next();
-            }
-
-            return res.status(403).json({ message: 'Access denied' });
-        };
+            return isOwner || hasRole ? next() : res.status(403).json({message: 'Access denied'});
+        }
     }
+
+    isPostAuthor(postIdParams = 'id'){
+        return async (req,res,next) => {
+            const postId = req.params[postIdParams];
+            const post = await postService.getPostById(postId);
+            return post.author === req.principal.userName ? next() : res.status(403).json({message: 'Access denied'});
+
+        }
+    }
+
+    isPostAuthorOrHasRole(postIdParams = 'id', role = USER){
+        return async (req,res,next) => {
+            const postId = req.params[postIdParams];
+            const post = await postService.getPostById(postId);
+            const isAuthor = post.author === req.principal.userName;
+            const hasRole = req.principal.roles.includes(role.toUpperCase().trim());
+            return isAuthor || hasRole ? next() : res.status(403).json({message: 'Access denied'});
+        }
+    }
+
 
 }
 

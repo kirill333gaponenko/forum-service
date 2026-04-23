@@ -3,7 +3,7 @@ import UserAccount from "../model/userAccount.model.js";
 
 const authentication = async (req, res, next) => {
 
-    if(req.path !== '/account/register'){
+    if(req.path !== '/account/register' && !req.path.startsWith('/forum/posts')){
 
     const authorization = req.headers.authorization;
     if(!authorization || !authorization.startsWith('Basic ')){

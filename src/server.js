@@ -6,29 +6,16 @@ import userAccountRoutes from "./routes/userAccount.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
 import authentication from "./middlewares/authentication.middleware.js";
 import {createAdmin} from "./configuration/initAdmin.js";
-import authorization from "./middlewares/authorization.middleware.js";
-import {ADMIN, MODERATOR, USER} from "./configuration/constants.js";
-
+import authorizationRouter  from "./routes/authorization.routes.js";
 
 const app = express();
-const authorizationRouter =Router()
 
 app.use(express.json());
 app.use(authentication)
-
-// authorizationRouter.patch('/account/user/:login/role/:role', authorization.hasRole(ADMIN))
-// authorizationRouter.delete('/account/user/:login/role/:role', authorization.hasRole(ADMIN))
-authorizationRouter.all('/account/user/:login/role/:role', authorization.hasRole(ADMIN))
-authorizationRouter.delete('/account/user/:login', authorization.checkRoleOrSameUser('login'));
-authorizationRouter.patch('/account/user/:login', authorization.sameUser('login'))
-authorizationRouter.post('/forum/post/:author', authorization.sameUser('author'))
-authorizationRouter.delete('/forum/post/:id', authorization.sameUser('author'))
-authorizationRouter.patch('/forum/post/:id', authorization.sameUser('author'))
-
-
-
-
 app.use(authorizationRouter)
+
+
+
 app.use('/forum', postRoutes)
 app.use('/account', userAccountRoutes)
 
