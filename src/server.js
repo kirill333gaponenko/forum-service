@@ -7,8 +7,16 @@ import errorHandler from "./middlewares/error.middleware.js";
 import authentication from "./middlewares/authentication.middleware.js";
 import {createAdmin} from "./configuration/initAdmin.js";
 import authorizationRouter  from "./routes/authorization.routes.js";
+import cors  from "cors";
 
 const app = express();
+
+const corsOptions = {
+    origin: ['http://localhost:8080'],
+    methods: ['GET', 'POST', 'DELETE', 'PATCH'],
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(authentication)
